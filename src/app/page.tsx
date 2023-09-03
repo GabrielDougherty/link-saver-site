@@ -10,7 +10,7 @@ function MySaveButton({ title, target }: { title: string, target: string }) {
     <a title={title}
       href={target}
     >
-    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" title={title}>{title}</button>
+    <button className="block mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" title={title}>{title}</button>
     </a>
   );
 }
@@ -38,7 +38,7 @@ export default function Home() {
     }
     return (<div>
         <input id="newLink" placeholder="Enter new link" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></input>
-        <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add link</button>
+        <button onClick={handleClick} className="bg-blue-500 mt-2 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add link</button>
     </div>);
   }
 
@@ -67,18 +67,23 @@ export default function Home() {
       }
     }
     return (
-      <div>
-        <input type="file" title='Upload' onChange={onChange}></input>
+      <div className='block mt-2'>
+        <label className="block mt-2 text-gray-700 text-sm font-bold mb-2">
+        Upload browser bookmarks file
+        </label>
+        <input className='block mt-2' type="file" title='Upload' onChange={onChange}></input>
       </div>
     )
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div className='p-4 bg-gray-200'>
+        <AddLink></AddLink>
+        <BookmarksUpload></BookmarksUpload>
+        <MySaveButton title='Save bookmarks' target={linkListToQueryParams(links.map((v) => encodeURIComponent(btoa(v))))}></MySaveButton>
+      </div>
       <LinkList links={links}></LinkList>
-      <AddLink></AddLink>
-      <BookmarksUpload></BookmarksUpload>
-      <MySaveButton title='Save bookmarks' target={linkListToQueryParams(links.map((v) => encodeURIComponent(btoa(v))))}></MySaveButton>
     </main>
   )
 }
