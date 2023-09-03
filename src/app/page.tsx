@@ -50,7 +50,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <LinkList links={links}></LinkList>
       <AddLink></AddLink>
-      <MySaveButton title='Save bookmarks' target={linkListToQueryParams(links.map((v) => btoa(v)))}></MySaveButton>
+      <MySaveButton title='Save bookmarks' target={linkListToQueryParams(links.map((v) => encodeURIComponent(btoa(v))))}></MySaveButton>
     </main>
   )
 }
