@@ -43,7 +43,7 @@ export default function Home() {
   }
 
   function LinkList({ links }: { links: Array<string>}) {
-    const linkItems = links.map((link) => <a href={link} key={uuidv4()} className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{link.substring(0, 80)}<li key={uuidv4()}></li></a>)
+    const linkItems = links.map((link) => <a href={link} key={uuidv4()} className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{link.substring(0, 120)}<li key={uuidv4()}></li></a>)
     return (<ul>{linkItems}</ul>)
   }
 
