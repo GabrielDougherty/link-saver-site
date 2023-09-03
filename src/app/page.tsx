@@ -1,7 +1,9 @@
 "use client";
 
 import Image from 'next/image'
-import { useState } from 'react';
+import { root } from 'postcss';
+import { useState, Dispatch, SetStateAction, MouseEvent, ChangeEvent } from 'react';
+import {v4 as uuidv4} from 'uuid';
 
 function MySaveButton({ title }: { title: string }) {
   return (
@@ -16,16 +18,40 @@ function MySaveButton({ title }: { title: string }) {
   );
 }
 
-function LinkList({ links }: { links: Array<string>}) {
-    const linkItems = links.map((link) => <a href={link} key={link}>{link}<li key={link}></li></a>)
-    return (<ul>{linkItems}</ul>)
-}
+
+
+
 
 export default function Home() {
-  const [links, setLinks] = useState(["https://www.google.com/"]);
+  var params = location.search;
+  var [links, setLinks] = useState(["https://www.google.com/"]);
+  function AddLink() {
+    var newLink = Array<string>();
+    newLink = [''];
+    function handleChange(e: ChangeEvent<HTMLInputElement>) {
+      console.log('hello1')
+      newLink[0] = e.target.value;
+    }
+    function handleClick(e: MouseEvent<HTMLButtonElement>) {
+      console.log('hello2')
+      console.log(links)
+      setLinks((links) => [...links, newLink[0]]);
+    }
+    return (<div>
+        <input id="newLink" placeholder="Enter new link" onChange={handleChange}></input>
+        <button onClick={handleClick}>Add link</button>
+    </div>);
+  }
+
+  function LinkList({ links }: { links: Array<string>}) {
+    const linkItems = links.map((link) => <a href={link} key={uuidv4()}>{link}<li key={uuidv4()}></li></a>)
+    return (<ul>{linkItems}</ul>)
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <LinkList links={links}></LinkList>
+      <AddLink></AddLink>
       <MySaveButton title='Save bookmarks'></MySaveButton>
     </main>
   )
