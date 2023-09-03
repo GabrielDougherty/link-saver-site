@@ -6,14 +6,11 @@ import { useSearchParams } from 'next/navigation'
 
 function MySaveButton({ title, target }: { title: string, target: string }) {
   return (
-    <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-    <a
+    <a title={title}
       href={target}
-      className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
     >
-    <button title={title}>{title}</button>
+    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" title={title}>{title}</button>
     </a>
-  </div>
   );
 }
 
@@ -39,13 +36,13 @@ export default function Home() {
       setLinks((links) => [...links, newLink]);
     }
     return (<div>
-        <input id="newLink" placeholder="Enter new link" onChange={handleChange}></input>
-        <button onClick={handleClick}>Add link</button>
+        <input id="newLink" placeholder="Enter new link" onChange={handleChange} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></input>
+        <button onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add link</button>
     </div>);
   }
 
   function LinkList({ links }: { links: Array<string>}) {
-    const linkItems = links.map((link) => <a href={link} key={uuidv4()}>{link}<li key={uuidv4()}></li></a>)
+    const linkItems = links.map((link) => <a href={link} key={uuidv4()} className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{link}<li key={uuidv4()}></li></a>)
     return (<ul>{linkItems}</ul>)
   }
 
