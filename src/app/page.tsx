@@ -43,8 +43,15 @@ export default function Home() {
   }
 
   function LinkList({ links }: { links: Array<string>}) {
-    const linkItems = links.map((link) => <a href={link} key={uuidv4()} className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{link.substring(0, 120)}<li key={uuidv4()}></li></a>)
-    return (<ul>{linkItems}</ul>)
+    const linkItems = links.map((link) => <a href={link} key={uuidv4()} className="block break-all flex-col bg-gray-200 rounded-lg px-3 py-1 text-sm font-semibold text-gray-700 mb-2">{link.substring(0, 120)}<li key={uuidv4()}></li></a>)
+    return (<ul className='mt-2'>{linkItems}</ul>)
+  }
+
+  function FormLabel({ contents }: {contents: string}) {
+    return (
+    <label className="block mt-2 text-gray-700 text-sm font-bold mb-2">
+      {contents}
+    </label>);
   }
 
   function BookmarksUpload() {
@@ -59,18 +66,14 @@ export default function Home() {
       });
     }    
     async function onChange(e: ChangeEvent<HTMLInputElement>) {
-      if (e.target.files != null) {
-        const text = await e.target.files.item(0)?.text();
-        if (text) {
-          parseBookmarks(text!)
-        }
+      const text = await e.target.files?.item(0)?.text();
+      if (text) {
+        parseBookmarks(text!)
       }
     }
     return (
       <div className='block mt-2'>
-        <label className="block mt-2 text-gray-700 text-sm font-bold mb-2">
-        Upload browser bookmarks file
-        </label>
+        <FormLabel contents='Upload browser bookmarks file'></FormLabel>
         <input className='block mt-2' type="file" title='Upload' onChange={onChange}></input>
       </div>
     )
@@ -78,10 +81,11 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className='p-4 bg-gray-200'>
+      <div className='p-4 bg-gray-200 flex-col'>
+        <h1 className='text-lg'>Link Saver</h1>
         <AddLink></AddLink>
         <BookmarksUpload></BookmarksUpload>
-        <MySaveButton title='Save bookmarks' target={linkListToQueryParams(links.map((v) => encodeURIComponent(btoa(v))))}></MySaveButton>
+        <MySaveButton title='Get link to this list' target={linkListToQueryParams(links.map((v) => encodeURIComponent(btoa(v))))}></MySaveButton>
       </div>
       <LinkList links={links}></LinkList>
     </main>
