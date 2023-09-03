@@ -25,7 +25,7 @@ function linkListToQueryParams(links: Array<string>) {
 
 export default function Home() {
   var searchParams = useSearchParams()
-  var [links, setLinks] = useState(searchParams.getAll("v"));
+  var [links, setLinks] = useState(searchParams.getAll("v").map((v) => atob(v)));
   function AddLink() {
     var newLink: string;
     newLink = '';
@@ -53,7 +53,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <LinkList links={links}></LinkList>
       <AddLink></AddLink>
-      <MySaveButton title='Save bookmarks' target={linkListToQueryParams(links)}></MySaveButton>
+      <MySaveButton title='Save bookmarks' target={linkListToQueryParams(links.map((v) => btoa(v)))}></MySaveButton>
     </main>
   )
 }
