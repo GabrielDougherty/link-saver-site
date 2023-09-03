@@ -3,6 +3,7 @@
 import { useState, MouseEvent, ChangeEvent } from 'react';
 import {v4 as uuidv4} from 'uuid';
 import { useSearchParams } from 'next/navigation'
+import * as cheerio from 'cheerio'
 
 function MySaveButton({ title, target }: { title: string, target: string }) {
   return (
@@ -42,14 +43,41 @@ export default function Home() {
   }
 
   function LinkList({ links }: { links: Array<string>}) {
-    const linkItems = links.map((link) => <a href={link} key={uuidv4()} className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{link}<li key={uuidv4()}></li></a>)
+    const linkItems = links.map((link) => <a href={link} key={uuidv4()} className="block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">{link.substring(0, 80)}<li key={uuidv4()}></li></a>)
     return (<ul>{linkItems}</ul>)
+  }
+
+  function BookmarksUpload() {
+    function parseBookmarks(data: string) {
+      var $ = cheerio.load(data);
+      $("a").each(function(index, a) {
+          var $a = $(a);
+          var url = $a.attr("href");
+          if (url) {
+            setLinks((links) => [...links, url!])
+          }
+      });
+    }    
+    async function onChange(e: ChangeEvent<HTMLInputElement>) {
+      if (e.target.files != null) {
+        const text = await e.target.files.item(0)?.text();
+        if (text) {
+          parseBookmarks(text!)
+        }
+      }
+    }
+    return (
+      <div>
+        <input type="file" title='Upload' onChange={onChange}></input>
+      </div>
+    )
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <LinkList links={links}></LinkList>
       <AddLink></AddLink>
+      <BookmarksUpload></BookmarksUpload>
       <MySaveButton title='Save bookmarks' target={linkListToQueryParams(links.map((v) => encodeURIComponent(btoa(v))))}></MySaveButton>
     </main>
   )
